@@ -1,6 +1,5 @@
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
-
-import styles from './src/styles.js';
+import styles from './src/Styles/styles.js';
 
 export default function App() {
   return (
@@ -9,8 +8,12 @@ export default function App() {
         <Image source={require('./assets/logo_soundsnap_claro.png')}
           style={styles.ImagemLogo}/>
         <TextInput style={styles.inputHeader} placeholder='O quê você quer ouvir hoje?'/>
+        <Image source={require('./assets/user.png')}
+          style={styles.ImagemUser}/>
       </View>
-      <Text style={styles.TituloDefault}>Hello World!</Text>
+      <View style={styles.container}>
+
+      </View>
     </View>
   );
 }
