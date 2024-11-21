@@ -1,6 +1,6 @@
 import Album from './src/Models/Album.tsx';
 import styles from './src/Styles/styles.js';
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Text, View, Image } from "react-native";
 
@@ -9,8 +9,8 @@ interface PropAlbum{
 }
 
 const ItemAlbum:React.FC<PropAlbum> = ( {Album})=> {
+
     
-    console.log(Album)
     
     return (
         <View style={styles.card} >
