@@ -1,7 +1,7 @@
 import { FlatList, ScrollView, View } from "react-native";
 import ItemAlbum from "../ItemAlbum"
-import styles from './src/Styles/styles.js';
-import Album from './src/Models/Album.tsx';
+import styles from '../../../Styles/styles';
+import Album from '../../../Models/Album';
 import React from "react";
 
 interface PropListaAlbum{
@@ -19,8 +19,8 @@ const  ListaAlbum:React.FC<PropListaAlbum> =
             renderItem={
                 ({item})=>{
                     return <ItemAlbum
-                        Album={item}
-                        </ItemAlbum>
+                        Album={item}></ItemAlbum>
+                        
                 }
             }
         />

@@ -1,6 +1,7 @@
-import Album from './src/Models/Album.tsx';
-import styles from './src/Styles/styles.js';
+import Album from '../../../Models/Album';
+import styles from '../../../Styles/styles';
 import React, { useEffect } from "react";
+import acess from '../../../../acess';
 
 import { Text, View, Image } from "react-native";
 

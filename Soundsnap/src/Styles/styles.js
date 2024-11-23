@@ -67,7 +67,57 @@ const styles = StyleSheet.create({
       height:100,
       objectFit:"contain",
       resizeMode:"contain"
-  }
+  },
+  albumContainer: {
+    backgroundColor: '#fff',
+    marginBottom: 16,
+    borderRadius: 8,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+  },
+  albumImage: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+  },
+  description: {
+    padding: 10,
+  },
+  albumName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  artist: {
+    fontSize: 14,
+    color: '#777',
+  },
+  info: {
+    fontSize: 14,
+    color: '#555',
+  },
+  actions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+  },
+  like: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  likes: {
+    fontSize: 14,
+  },
+  favorite: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  favoriteText: {
+    fontSize: 14,
+    color: '#ff7f50',
+  },
   });
   
 export default styles;
