@@ -3,9 +3,9 @@ import styles from './src/Styles/styles.js';
 import { useEffect, useState } from 'react';
 import acess from './acess.js';
 import Album from './src/Models/Album.js';
-import ListaAlbum from './src/Componentes/Adaptadores/ListaAlbum/index.js';
+import ListaAlbum from './src/Componentes/Adaptadores/ListaAlbum/index';
 import axios from "axios";
-import ItemAlbum from './src/Componentes/Adaptadores/ItemAlbum/index.js';
+import ItemAlbum from './src/Componentes/Adaptadores/ItemAlbum/index';
  
  
  
@@ -15,7 +15,7 @@ export default function Index() {
   
  
  
-  let [produtos,setProdutos]= useState([]);
+
  
 
   return(
@@ -30,6 +30,8 @@ export default function Index() {
       <View style={styles.container}>
       <View style={styles.albumContainer}>
         <TouchableOpacity onPress={() => { /* navegue para o detalhe do álbum */ }}>
+          
+          <ItemAlbum />
           
           
         </TouchableOpacity>

@@ -6,7 +6,7 @@ import acess from '../../../../acess';
 import { Text, View, Image } from "react-native";
 
 interface PropAlbum{
-    Album:Album
+    Album?:Album
 }
 
 const ItemAlbum:React.FC<PropAlbum> = ( {Album})=> {
@@ -15,12 +15,12 @@ const ItemAlbum:React.FC<PropAlbum> = ( {Album})=> {
     
     return (
         <View style={styles.card} >
-            <Text style={styles.cardText} >{Album.nomeAlbum}</Text>
-            <Text style={styles.cardText} >{Album.nomeArtista}</Text>
-            <Text style={styles.cardText} >{Album.lancamento}</Text>
-            <Image source={{uri:Album.foto} } 
+            <Text style={styles.cardText} >fisdfv</Text>
+            <Text style={styles.cardText} >fsgs</Text>
+            <Text style={styles.cardText} >dfgs</Text>
+            {/* <Image source={{uri:Album.foto} } 
              style={styles.image}   />
-  
+   */}
             
         </View>
     )
