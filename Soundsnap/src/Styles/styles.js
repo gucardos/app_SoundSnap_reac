@@ -23,14 +23,14 @@ const styles = StyleSheet.create({
       paddingLeft: 0,
       flexDirection:'row',
       alignItems:'center',
-      alignContent:'space-evenly'
+      
     },
     inputHeader:{
       color:'#191013',
       backgroundColor:'#d4cdc5',
       borderRadius:20,
       height:30,
-      width:250,
+      width:270,
       textAlign:'center',
       paddingTop:'auto',
       textAlignVertical:'auto'
@@ -40,12 +40,14 @@ const styles = StyleSheet.create({
       height: 50,
       paddingTop: 'auto',
       paddingLeft: 'auto',
-      backgroundColor:'d4cdc5'
+      backgroundColor:'#d4cdc5',
+      borderRadius:25,
+
     },
     card: {
       width: 300,
       height: 200,
-      backgroundColor: '#AAAAAA',
+      backgroundColor: '#191013',
       borderRadius: 10,
       elevation: 5, // Para Android
       shadowColor: '#000', // Para iOS
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
   },
   cardText: {
       fontSize: 18,
-      color: '#333',
+      color: '#d4cdc5',
       fontWeight:"bold"
   },
   image:{
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
       resizeMode:"contain"
   },
   albumContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: '#d4cdc5',
     marginBottom: 16,
     borderRadius: 8,
     overflow: 'hidden',
@@ -77,6 +79,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
+    alignItems: 'center'
   },
   albumImage: {
     width: '100%',
