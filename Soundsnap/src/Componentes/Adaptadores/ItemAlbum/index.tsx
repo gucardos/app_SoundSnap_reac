@@ -6,7 +6,7 @@ import styles from "../../../Styles/styles";
 const ItemAlbum: React.FC = () => {
     const [albumData, setAlbumData] = useState<any>(null);
     const [loading, setLoading] = useState(true); // Estado para indicar se estamos carregando os dados
-    const [error, setError] = useState<string | null>(null); // Para exibir erros
+    const [error, setError] = useState<string | null>(null); // Para exibir erros 
 
     useEffect(() => {
         const fetchAlbum = async () => {
