@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import styles from './src/Styles/styles.js';
 import { useEffect, useState } from 'react';
-import acess from './acess.js';
+import {acess} from './acess';
 import Album from './src/Models/Album.js';
 import ListaAlbum from './src/Componentes/Adaptadores/ListaAlbum/index';
 import axios from "axios";
@@ -31,7 +31,7 @@ export default function Index() {
       <View style={styles.albumContainer}>
         <TouchableOpacity onPress={() => { /* navegue para o detalhe do álbum */ }}>
           
-          <ItemAlbum />
+          <ItemAlbum></ItemAlbum>
           
           
         </TouchableOpacity>
