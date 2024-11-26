@@ -1,56 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { Text, View, Image } from "react-native";
+import React, { useEffect, useState} from "react";
+import { Text, View, Image, TouchableOpacity  } from "react-native";
 import { get_rand_album } from "../../../../acess";  // Importando a função correta
 import styles from "../../../Styles/styles";
+import Album from "../../../Models/Album";
 
-const ItemAlbum: React.FC = () => {
+interface PropAlbum{
+    album: Album;
+    
+}
+
+const ItemAlbum: React.FC<PropAlbum> = ({album}) => {
     const [albumData, setAlbumData] = useState<any>(null);
     const [loading, setLoading] = useState(true); // Estado para indicar se estamos carregando os dados
     const [error, setError] = useState<string | null>(null); // Para exibir erros 
 
     useEffect(() => {
-        const fetchAlbum = async () => {
-            try {
-                setLoading(true); // Inicia o carregamento
-                setError(null); // Reseta qualquer erro anterior
+        setAlbumData(album)
 
-                // Busca dados de álbum aleatório
-                const data = await get_rand_album();
-                console.log("Dados do álbum:", data); // Log para verificar a resposta da API
-
-                if (data && data.albums && data.albums.items.length > 0) {
-                    setAlbumData(data.albums.items[0]); // Atualiza o estado com o primeiro álbum encontrado
-                } else {
-                    setError("Nenhum álbum encontrado.");
-                }
-            } catch (error) {
-                console.error("Erro ao buscar dados do álbum:", error);
-                setError("Erro ao buscar os dados do álbum.");
-            } finally {
-                setLoading(false); // Finaliza o carregamento
-            }
-        };
-
-        fetchAlbum(); // Chama a função para buscar o álbum ao carregar o componente
+       ; // Chama a função para buscar o álbum ao carregar o componente
     }, []); // O useEffect é chamado apenas uma vez ao montar o componente
 
-    if (loading) {
-        return (
-            <View style={styles.card}>
-                <Text style={styles.cardText}>Carregando...</Text>
-            </View>
-        );
-    }
-
-    if (error) {
-        return (
-            <View style={styles.card}>
-                <Text style={styles.cardText}>Erro: {error}</Text>
-            </View>
-        );
-    }
+    
 
     return (
+        <TouchableOpacity>
         <View style={styles.card}>
             {albumData ? (
                 <>
@@ -67,6 +40,7 @@ const ItemAlbum: React.FC = () => {
                 <Text style={styles.cardText}>Nenhum álbum encontrado.</Text>
             )}
         </View>
+        </TouchableOpacity>
     );
 };
 

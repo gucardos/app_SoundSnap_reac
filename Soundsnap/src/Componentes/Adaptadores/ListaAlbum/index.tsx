@@ -19,7 +19,7 @@ const  ListaAlbum:React.FC<PropListaAlbum> =
             renderItem={
                 ({item})=>{
                     return <ItemAlbum
-                        Album={item}></ItemAlbum>
+                        album={item}></ItemAlbum>
                         
                 }
             }

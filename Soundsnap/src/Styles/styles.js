@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     },
     card: {
       width: 300,
-      height: 200,
+      height: 300,
       backgroundColor: '#191013',
       borderRadius: 10,
       elevation: 5, // Para Android
@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
       fontWeight:"bold"
   },
   image:{
-      width:100,
-      height:100,
+      width:200,
+      height:200,
       objectFit:"contain",
       resizeMode:"contain"
   },
