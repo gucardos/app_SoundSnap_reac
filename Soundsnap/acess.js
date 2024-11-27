@@ -94,6 +94,36 @@ export async function album_main() {
     }
 }
 
+// Função para buscar as faixas de um álbum específico
+export async function get_album_tracks(albumId) {
+    try {
+        // Obtém o token de acesso
+        const token = await acess();
+        const accessToken = token.access_token;
+
+        // Realiza a requisição para buscar as faixas do álbum
+        const url = `https://api.spotify.com/v1/albums/${albumId}/tracks`;
+        const result = await fetch(url, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        // Verifica se a resposta foi bem-sucedida
+        if (!result.ok) {
+            throw new Error("Erro ao buscar faixas do álbum");
+        }
+
+        // Retorna os dados das faixas
+        const data = await result.json();
+        return data.items; // Retorna a lista de faixas
+    } catch (error) {
+        console.error("Erro ao buscar faixas do álbum:", error);
+        throw error; // Propaga o erro
+    }
+}
+
+
 // Função para buscar dados do perfil do usuário
 export async function main_perfil() {
     try {

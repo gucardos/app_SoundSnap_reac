@@ -1,32 +1,31 @@
-import { FlatList, ScrollView, View } from "react-native";
-import ItemAlbum from "../ItemAlbum"
+import { FlatList, View } from "react-native";
+import ItemAlbum from "../ItemAlbum";
 import styles from '../../../Styles/styles';
-import Album from '../../../Models/Album';
+import Album from '../../../Models/Album'; // Corrigido para evitar duplicidade
 import React from "react";
 
-interface PropListaAlbum{
+interface PropListaAlbum {
     albuns: Album[];
-    aoAtualizar?:Function;
+    aoAtualizar?: Function;
 }
 
-const  ListaAlbum:React.FC<PropListaAlbum> =
-         ({albuns})=>{
+interface PropItemAlbum {
+    album: Album;
+}
+
+const ListaAlbum: React.FC<PropListaAlbum> = ({ albuns }) => {
+    const renderItem = ({ item }: { item: Album }) => (
+        <ItemAlbum album={item} />
+    );
     return (
-    
         <FlatList
             data={albuns}
-            keyExtractor={(p)=>p.id.toString()}
-            renderItem={
-                ({item})=>{
-                    return <ItemAlbum
-                        album={item}></ItemAlbum>
-                        
-                }
-            }
+            keyExtractor={(album) => album.id.toString()}
+            renderItem={renderItem}
+            contentContainerStyle={{ padding: 16 }}
+            ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         />
-        
-    
-    )
-}
+    );
+};
 
-export default ListaAlbum
+export default ListaAlbum;
