@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Index from '../App';  // Caminho para a tela de inicial
 import DetalhesAlbum from './Pages/DetalhesAlbum'; // Caminho para a tela de detalhes do álbum
-import Album from './Models/Album';  // Importando o tipo de Album
+import Album from './Models/Album' ;  // Importando o tipo de Album
 
 export type DetalhesAlbumParams = {
   DetalhesAlbum: { album: Album }; // Definindo os parâmetros para a tela DetalhesAlbum
