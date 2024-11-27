@@ -1,57 +1,68 @@
-import { Image, StyleSheet, Text, TextInput,  View } from 'react-native';
-import styles from './src/Styles/styles.js';
-import { useEffect, useState } from 'react';
-import {acess, get_rand_album} from './acess';
-import Album from './src/Models/Album.js';
+// Index.tsx
+
+import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import styles from './src/Styles/styles';
+import { get_rand_album } from './acess';
+import Album from './src/Models/Album';
 import ListaAlbum from './src/Componentes/Adaptadores/ListaAlbum/index';
-import axios from "axios";
-import ItemAlbum from './src/Componentes/Adaptadores/ItemAlbum/index';
- 
- 
- 
- 
- 
+import AppNavigator from './src/AppNavigator'; // Importe o AppNavigator
+
+type RootStackParamList = {
+  Index: undefined;
+  DetalhesAlbum: { album: Album };
+};
+
 export default function Index() {
-  const [listaAlb,setLista] = useState<Album[]>([])
   
-  async function  listaAlbum()  {
-   const lista = [];
-   var i=0
-   for(i=0;i<20;i++){
-      var album = await get_rand_album();
-      lista.push(album.albums.items[0])
-   }
-   setLista(lista)
-   return lista;
- }
- 
- useEffect(()=>{
-  listaAlbum()
- },[])
+  const [listaAlb, setLista] = useState<Album[]>([]);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();  // Uso do hook de navegação
 
- 
+  async function listaAlbum() {
+    const lista: Album[] = [];
+    for (let i = 0; i < 20; i++) {
+      const album = await get_rand_album();
+      const fetchedAlbum = album.albums.items[0];
+      // Ajustando para usar o modelo correto
+      lista.push({
+        id: fetchedAlbum.id,
+        nomeAlbum: fetchedAlbum.name,
+        nomeArtista: fetchedAlbum.artists[0]?.name || 'Artista Desconhecido',
+        musicas: fetchedAlbum.total_tracks || 0,
+        foto: fetchedAlbum.images[0]?.url || '',
+        lancamento: parseInt(fetchedAlbum.release_date?.slice(0, 4)) || 0,
+      });
+    }
+    setLista(lista);
+  }
 
-  return(
+  useEffect(() => {
+    listaAlbum();
+  }, []);
+
+  return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={require('./assets/logo_soundsnap_claro.png')}
-          style={styles.ImagemLogo}/>
-        <TextInput style={styles.inputHeader} placeholder='O quê você quer ouvir hoje?'/>
-        <Image source={require('./assets/user.png')}
-          style={styles.ImagemUser}/>
+        <Image
+          source={require('./assets/logo_soundsnap_claro.png')}
+          style={styles.ImagemLogo}
+        />
+        <TextInput
+          style={styles.inputHeader}
+          placeholder="O quê você quer ouvir hoje?"
+        />
+        <Image source={require('./assets/user.png')} style={styles.ImagemUser} />
       </View>
       <View style={styles.container}>
-      <View style={styles.albumContainer}>
-
-          
-          <ListaAlbum albuns={listaAlb}></ListaAlbum>
-          
-          
-
+        <View style={styles.albumContainer}>
+          {/* Aqui passa a função de navegação para o componente ListaAlbum */}
+          <ListaAlbum
+            albuns={listaAlb}
+            aoAtualizar={(album: Album) => navigation.navigate('DetalhesAlbum', { album })}
+          />
+        </View>
       </View>
     </View>
-  </View>
-
-  )
+  );
 }
-
