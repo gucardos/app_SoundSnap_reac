@@ -1,28 +1,32 @@
-// src/Componentes/Adaptadores/ListaAlbum/index.tsx
-
-import React from "react";
-import { FlatList, View } from "react-native";
-import ItemAlbum from "../ItemAlbum";
+import { FlatList, ScrollView, View } from "react-native";
+import ItemAlbum from "../ItemAlbum"
+import styles from '../../../Styles/styles';
 import Album from '../../../Models/Album';
+import React from "react";
 
-interface PropListaAlbum {
-  albuns: Album[];
-  aoAtualizar?: (album: Album) => void;  // Função para navegar para DetalhesAlbum
+interface PropListaAlbum{
+    albuns: Album[];
+    aoAtualizar?:Function;
 }
 
-const ListaAlbum: React.FC<PropListaAlbum> = ({ albuns, aoAtualizar }) => {
-  return (
-    <FlatList
-      data={albuns}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
-        <ItemAlbum
-          album={item}
-          aoAtualizar={aoAtualizar}  // Passando a função de navegação para ItemAlbum
+const  ListaAlbum:React.FC<PropListaAlbum> =
+         ({albuns})=>{
+    return (
+    
+        <FlatList
+            data={albuns}
+            keyExtractor={(p)=>p.id.toString()}
+            renderItem={
+                ({item})=>{
+                    return <ItemAlbum
+                        album={item}></ItemAlbum>
+                        
+                }
+            }
         />
-      )}
-    />
-  );
+        
+    
+    )
 }
 
-export default ListaAlbum;
+export default ListaAlbum

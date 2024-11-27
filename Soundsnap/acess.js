@@ -48,7 +48,7 @@ export async function get_rand_album() {
         }
 
         let getRandomOffset = Math.floor(Math.random() * 999);
-        const url = `https://api.spotify.com/v1/search?query=${randomSearch}&offset=${getRandomOffset}&limit=1&type=album&market=BR`;
+        const url = `https://api.spotify.com/v1/search?query=${randomSearch}&offset=${getRandomOffset}&limit=1&type=album&market=US`;
 
         // Realiza a requisição com o token
         const result = await fetch(url, {
