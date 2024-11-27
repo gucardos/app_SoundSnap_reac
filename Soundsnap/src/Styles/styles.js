@@ -45,10 +45,10 @@ const styles = StyleSheet.create({
 
     },
     card: {
-      width: 300,
-      height: 300,
+      width: 350,
+      height: 350,
       backgroundColor: '#191013',
-      borderRadius: 10,
+      borderRadius: 20,
       elevation: 5, // Para Android
       shadowColor: '#000', // Para iOS
       shadowOffset: { width: 0, height: 2 }, // Para iOS
@@ -62,13 +62,16 @@ const styles = StyleSheet.create({
   cardText: {
       fontSize: 18,
       color: '#d4cdc5',
-      fontWeight:"bold"
+      fontWeight:"bold",
+      padding:5,
+      
   },
   image:{
       width:200,
       height:200,
       objectFit:"contain",
-      resizeMode:"contain"
+      resizeMode:"contain",
+      borderRadius: 15,
   },
   albumContainer: {
     backgroundColor: '#d4cdc5',
