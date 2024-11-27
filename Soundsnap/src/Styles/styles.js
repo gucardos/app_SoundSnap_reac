@@ -95,10 +95,11 @@ const styles = StyleSheet.create({
   albumName: {
     fontSize: 18,
     fontWeight: 'bold',
+    color:'#d4cdc5',
   },
   artist: {
     fontSize: 14,
-    color: '#777',
+    color: '#d4cdc5',
   },
   info: {
     fontSize: 14,
@@ -144,11 +145,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0', // uma cor mais suave para a borda
+    borderBottomColor: '#d4cdc5', // uma cor mais suave para a borda
   },
   track: {
     fontSize: 16,
-    color: '#191013',
+    color: '#d4cdc5',
     flex: 1,
     marginRight: 8, // adicionando espaço entre o nome da música e a duração
   },
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
     textAlign: 'right', // garante que a duração esteja sempre alinhada à direita
   },
   albumDetailsContainer: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#191013',
     margin: 16,
     borderRadius: 8,
     padding: 20,
