@@ -7,8 +7,9 @@ import { get_album_tracks } from '../../../../acess'; // Importando a nova funç
 
 // Definir o tipo de navegação com as rotas possíveis
 type RootStackParamList = {
-  detalhesAlbum: Album;
   index: undefined;
+  detalhesAlbum: { id: number; nomeAlbum: string; nomeArtista: string; foto: string; lancamento: number; musicas: number };
+  loginCadastro: undefined;
 };
 
 export default function DetalhesAlbum() {
@@ -47,7 +48,9 @@ export default function DetalhesAlbum() {
           <Image source={require('../../../../assets/logo_soundsnap_claro.png')} style={styles.ImagemLogo} />
         </TouchableOpacity>
         <TextInput style={styles.inputHeader} placeholder="O quê você quer ouvir hoje?" />
-        <Image source={require('../../../../assets/user.png')} style={styles.ImagemUser} />
+        <TouchableOpacity onPress={() => navigation.navigate('loginCadastro')}>
+          <Image source={require('../../../../assets/user.png')} style={styles.ImagemUser} />
+        </TouchableOpacity>
       </View>
       <View style={styles.albumDetailsContainer}>
         <Image source={{ uri: foto }} style={styles.albumImage} />

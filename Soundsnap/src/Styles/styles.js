@@ -197,6 +197,50 @@ const styles = StyleSheet.create({
     marginHorizontal: 8, // espaço entre o input e os ícones
     paddingHorizontal: 10,
   },
+
+  loginContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#d4cdc5',
+  },
+  loginTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#191013',
+  },
+  loginInput: {
+    width: '90%',
+    height: 50,
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#cccccc',
+  },
+  loginButton: {
+    width: '90%',
+    height: 50,
+    backgroundColor: '#191013',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  loginButtonText: {
+    color: '#d4cdc5',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  loginToggleText: {
+    color: '#191013',
+    fontSize: 14,
+    textDecorationLine: 'underline',
+  },
+  
   
   
   
