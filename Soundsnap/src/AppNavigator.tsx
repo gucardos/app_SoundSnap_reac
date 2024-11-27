@@ -21,5 +21,5 @@ export default function AppNavigator() {
         <Stack.Screen name="DetalhesAlbum" component={DetalhesAlbum} />
       </Stack.Navigator>
     </NavigationContainer>
-  );
+  ); 
 }
