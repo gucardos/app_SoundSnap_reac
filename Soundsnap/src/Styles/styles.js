@@ -124,6 +124,81 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#ff7f50',
   },
+
+  albumDetailsContainer: {
+    backgroundColor: '#d4cdc5',
+    margin: 16,
+    borderRadius: 8,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    alignItems: 'center'
+  },
+
+  trackContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0', // uma cor mais suave para a borda
+  },
+  track: {
+    fontSize: 16,
+    color: '#191013',
+    flex: 1,
+    marginRight: 8, // adicionando espaço entre o nome da música e a duração
+  },
+  trackDuration: {
+    fontSize: 14,
+    color: '#555',
+    textAlign: 'right', // garante que a duração esteja sempre alinhada à direita
+  },
+  albumDetailsContainer: {
+    backgroundColor: '#ffffff',
+    margin: 16,
+    borderRadius: 8,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 3, // para Android, adiciona uma sombra suave
+  },
+  albumImage: {
+    width: 150, // reduzindo o tamanho para caber melhor na tela
+    height: 150,
+    resizeMode: 'contain',
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  header: {
+    backgroundColor: '#191013',
+    height: 110,
+    width: '100%',
+    paddingTop: 20,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between', // garante espaçamento igual entre elementos
+  },
+  inputHeader: {
+    color: '#191013',
+    backgroundColor: '#d4cdc5',
+    borderRadius: 20,
+    height: 40,
+    flex: 1,
+    textAlign: 'center',
+    marginHorizontal: 8, // espaço entre o input e os ícones
+    paddingHorizontal: 10,
+  },
+  
+  
+  
   });
   
 export default styles;

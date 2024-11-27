@@ -6,12 +6,13 @@ import { useEffect, useState } from 'react';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { acess, get_rand_album } from './acess';
 import Album from './src/Models/Album.js';
-import DetalhesAlbum from './src/Componentes/Adaptadores/DetalhesAlbum';
+import DetalhesAlbum from './src/Componentes/Adaptadores/DetalhesAlbum'; // Tela de detalhes do álbum
+import LoginCadastro from './src/Componentes/Adaptadores/LoginCadastro/LoginCadastro'; // Tela de login/cadastro
 
-// Definir o tipo de navegação com as rotas possíveis
 type RootStackParamList = {
-  detalhesAlbum: Album;
   index: undefined;
+  detalhesAlbum: { id: number; nomeAlbum: string; nomeArtista: string; foto: string; lancamento: number; musicas: number };
+  loginCadastro: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -20,8 +21,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="index">
-        <Stack.Screen name="index" component={Index} options={{ title: 'Home' }} />
-        <Stack.Screen name="detalhesAlbum" component={DetalhesAlbum} options={{ title: 'Detalhes do Álbum' }} />
+        <Stack.Screen name="index" component={Index} /> 
+        <Stack.Screen name="detalhesAlbum" component={DetalhesAlbum} />
+        <Stack.Screen name="loginCadastro" component={LoginCadastro} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -88,9 +90,13 @@ function Index() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={require('./assets/logo_soundsnap_claro.png')} style={styles.ImagemLogo} />
+      <TouchableOpacity onPress={() => navigation.navigate('index')}>
+          <Image source={require('./assets/logo_soundsnap_claro.png')} style={styles.ImagemLogo} />
+        </TouchableOpacity>
         <TextInput style={styles.inputHeader} placeholder="O quê você quer ouvir hoje?" />
-        <Image source={require('./assets/user.png')} style={styles.ImagemUser} />
+        <TouchableOpacity onPress={() => navigation.navigate('loginCadastro')}>
+          <Image source={require('./assets/user.png')} style={styles.ImagemUser} />
+        </TouchableOpacity>
       </View>
       <View style={styles.container}>
         {loading ? (
