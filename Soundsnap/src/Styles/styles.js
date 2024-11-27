@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   },
   trackDuration: {
     fontSize: 14,
-    color: '#555',
+    color: '#d4cdc5',
     textAlign: 'right', // garante que a duração esteja sempre alinhada à direita
   },
   albumDetailsContainer: {
