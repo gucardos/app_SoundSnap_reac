@@ -241,6 +241,12 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   
+  inputLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#191013',
+    marginBottom: 8,
+  },
   
   
   
