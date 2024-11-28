@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, Image } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import HeaderWithSearch from '../../../Componentes/HeaderWithSearch/HeaderWithSearch';
 import styles from '../../../Styles/styles';
 
 // Definir o tipo de navegação com as rotas possíveis
@@ -11,53 +13,58 @@ type RootStackParamList = {
   loginCadastro: undefined;
 };
 
+type User = {
+  usuario: string;
+  nome: string;
+  email: string;
+  imagem: string;
+};
+
 export default function LoginCadastro() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const [isLogin, setIsLogin] = useState(true); // Estado para alternar entre login e cadastro
+  const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState('');
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [user, setUser] = useState<User | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      const storedUser = await AsyncStorage.getItem('user');
+      if (storedUser) setUser(JSON.parse(storedUser));
+      setLoading(false);
+    };
+    loadUser();
+  }, []);
 
   const handleLogin = async () => {
     if (!username || !password) {
       Alert.alert('Erro no login', 'Por favor, preencha todos os campos obrigatórios.');
       return;
     }
-
     try {
       const response = await axios.post('https://spotifyapi-hct0.onrender.com/login', {
         usuario: username.trim(),
         senha: password.trim(),
       });
-
-      console.log('Resposta da API (login):', response.data);
       if (response.status === 200) {
         Alert.alert('Login bem-sucedido', 'Você está logado!');
-        // Navegar para a página principal
-        navigation.navigate('index');
+        const userData = response.data;
+        setUser(userData);
+        await AsyncStorage.setItem('user', JSON.stringify(userData));
       } else {
         Alert.alert('Erro no login', 'Verifique suas credenciais e tente novamente.');
       }
     } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          console.error('Erro no login:', error.response.data);
-          const errorMessage = Array.isArray(error.response.data.detail)
-            ? error.response.data.detail.map((detail: any) => detail.msg).join(', ')
-            : 'Nome de usuário ou senha incorretos.';
-          Alert.alert('Erro no login', errorMessage);
-        } else if (error.request) {
-          console.error('Erro na requisição:', error.request);
-          Alert.alert('Erro no login', 'Não foi possível obter resposta do servidor. Tente novamente mais tarde.');
-        } else {
-          console.error('Erro ao configurar a solicitação:', error.message);
-          Alert.alert('Erro no login', 'Erro inesperado. Tente novamente.');
-        }
-      } else {
-        console.error('Erro desconhecido no login:', error);
-        Alert.alert('Erro no login', 'Erro desconhecido. Tente novamente.');
-      }
+      const errorMessage = axios.isAxiosError(error) && error.response
+        ? Array.isArray(error.response.data.detail)
+          ? error.response.data.detail.map((detail: any) => detail.msg).join(', ')
+          : 'Nome de usuário ou senha incorretos.'
+        : 'Erro desconhecido. Tente novamente.';
+      Alert.alert('Erro no login', errorMessage);
     }
   };
 
@@ -66,59 +73,70 @@ export default function LoginCadastro() {
       Alert.alert('Erro no cadastro', 'Por favor, preencha todos os campos obrigatórios.');
       return;
     }
-
     try {
       const response = await axios.post('https://spotifyapi-hct0.onrender.com/users/', {
         usuario: username.trim(),
         nome: fullName.trim(),
         email: email.trim(),
         senha: password.trim(),
-        imagem: "default_image_url", // Pode ser um campo obrigatório na API, ajustado conforme necessário
+        imagem: "default_image_url",
         likes: [],
         deslikes: []
       });
-
-      console.log('Resposta da API (cadastro):', response.data);
-      if (response.status === 200) { // Mudando para verificar código de sucesso 200
+      if (response.status === 201) {
         Alert.alert('Cadastro bem-sucedido', 'Sua conta foi criada!');
-        // Trocar para a página de login
         setIsLogin(true);
       } else {
         Alert.alert('Erro no cadastro', 'Verifique os dados e tente novamente.');
       }
     } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          console.error('Erro no cadastro:', error.response.data);
-          const errorMessage = Array.isArray(error.response.data.detail)
-            ? error.response.data.detail.map((detail: any) => detail.msg).join(', ')
-            : 'Não foi possível criar sua conta. Tente novamente.';
-          Alert.alert('Erro no cadastro', errorMessage);
-        } else if (error.request) {
-          console.error('Erro na requisição:', error.request);
-          Alert.alert('Erro no cadastro', 'Não foi possível obter resposta do servidor. Tente novamente mais tarde.');
-        } else {
-          console.error('Erro ao configurar a solicitação:', error.message);
-          Alert.alert('Erro no cadastro', 'Erro inesperado. Tente novamente.');
-        }
-      } else {
-        console.error('Erro desconhecido no cadastro:', error);
-        Alert.alert('Erro no cadastro', 'Erro desconhecido. Tente novamente.');
-      }
+      const errorMessage = axios.isAxiosError(error) && error.response
+        ? Array.isArray(error.response.data.detail)
+          ? error.response.data.detail.map((detail: any) => detail.msg).join(', ')
+          : 'Não foi possível criar sua conta. Tente novamente.'
+        : 'Erro desconhecido. Tente novamente.';
+      Alert.alert('Erro no cadastro', errorMessage);
     }
   };
 
-  return (
-    <View style={[styles.loginContainer, { paddingHorizontal: 20 }]}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('index')}>
-          <Image source={require('../../../../assets/logo_soundsnap_claro.png')} style={styles.ImagemLogo} />
-        </TouchableOpacity>
-        <TextInput style={styles.inputHeader} placeholder="O quê você quer ouvir hoje?" />
-        <TouchableOpacity onPress={() => navigation.navigate('loginCadastro')}>
-          <Image source={require('../../../../assets/user.png')} style={styles.ImagemUser} />
-        </TouchableOpacity>
+  const handleSearch = () => {
+    console.log('Buscando por:', searchQuery);
+    // Lógica para buscar álbuns usando a query
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.loginContainer}>
+        <Text>Carregando...</Text>
       </View>
+    );
+  }
+
+  if (user) {
+    return (
+      <View style={[styles.loginContainer, { paddingHorizontal: 20 }]}> 
+        <HeaderWithSearch 
+          searchQuery={searchQuery}
+          onSearchChange={(text) => setSearchQuery(text)}
+          onSearchSubmit={handleSearch}
+        />
+        <View style={{ alignItems: 'center', marginTop: 20 }}>
+          <Text style={styles.loginTitle}>Bem-vindo, {user.nome}!</Text>
+          <Text style={styles.inputLabel}>Usuário: {user.usuario}</Text>
+          <Text style={styles.inputLabel}>Email: {user.email}</Text>
+          <Text style={[styles.loginTitle, { marginTop: 30 }]}>Seus álbuns favoritos</Text>
+        </View>
+      </View>
+    );
+  }
+
+  return (
+    <View style={[styles.loginContainer, { paddingHorizontal: 20 }]}> 
+      <HeaderWithSearch 
+        searchQuery={searchQuery}
+        onSearchChange={(text) => setSearchQuery(text)}
+        onSearchSubmit={handleSearch}
+      />
       <Text style={[styles.loginTitle, { marginBottom: 20 }]}>{isLogin ? 'Login' : 'Cadastro'}</Text>
       <Text style={styles.inputLabel}>Nome de usuário</Text>
       <TextInput

@@ -1,13 +1,15 @@
+// Importar a função de busca
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Image, TextInput, View, FlatList, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import { Image, View, FlatList, TouchableOpacity, Text, ActivityIndicator, Alert } from 'react-native';
 import styles from './src/Styles/styles.js';
 import { useEffect, useState } from 'react';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { acess, get_rand_album } from './acess';
+import { acess, get_rand_album, search_album } from './acess';
 import Album from './src/Models/Album.js';
-import DetalhesAlbum from './src/Componentes/Adaptadores/DetalhesAlbum'; // Tela de detalhes do álbum
-import LoginCadastro from './src/Componentes/Adaptadores/LoginCadastro/LoginCadastro'; // Tela de login/cadastro
+import DetalhesAlbum from './src/Componentes/Adaptadores/DetalhesAlbum'; 
+import LoginCadastro from './src/Componentes/Adaptadores/LoginCadastro/LoginCadastro';
+import HeaderWithSearch from './src/Componentes/HeaderWithSearch/HeaderWithSearch'; 
 
 type RootStackParamList = {
   index: undefined;
@@ -21,7 +23,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="index">
-        <Stack.Screen name="index" component={Index} /> 
+        <Stack.Screen name="index" component={Index} />
         <Stack.Screen name="detalhesAlbum" component={DetalhesAlbum} />
         <Stack.Screen name="loginCadastro" component={LoginCadastro} />
       </Stack.Navigator>
@@ -32,9 +34,11 @@ export default function App() {
 function Index() {
   const [listaAlb, setLista] = useState<Album[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   async function listaAlbum() {
+    setLoading(true);
     try {
       const lista = [];
       for (let i = 0; i < 20; i++) {
@@ -54,6 +58,38 @@ function Index() {
       setLista(lista);
     } catch (error) {
       console.error("Erro ao buscar álbuns: ", error);
+      Alert.alert('Erro', 'Não foi possível buscar os álbuns. Tente novamente mais tarde.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleSearch() {
+    if (!searchQuery) {
+      Alert.alert('Busca', 'Por favor, insira um termo para buscar.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await search_album(searchQuery);
+      if (response && response.albums && response.albums.items.length > 0) {
+        const albums = response.albums.items.map((albumItem: any) => ({
+          id: albumItem.id,
+          nomeAlbum: albumItem.name,
+          nomeArtista: albumItem.artists[0].name,
+          foto: albumItem.images[0]?.url || '',
+          lancamento: new Date(albumItem.release_date).getFullYear(),
+          musicas: albumItem.total_tracks,
+        }));
+        setLista(albums);
+      } else {
+        Alert.alert('Resultado', 'Nenhum álbum encontrado.');
+        setLista([]);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar álbuns: ", error);
+      Alert.alert('Erro', 'Não foi possível realizar a busca.');
     } finally {
       setLoading(false);
     }
@@ -89,15 +125,11 @@ function Index() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-      <TouchableOpacity onPress={() => navigation.navigate('index')}>
-          <Image source={require('./assets/logo_soundsnap_claro.png')} style={styles.ImagemLogo} />
-        </TouchableOpacity>
-        <TextInput style={styles.inputHeader} placeholder="O quê você quer ouvir hoje?" />
-        <TouchableOpacity onPress={() => navigation.navigate('loginCadastro')}>
-          <Image source={require('./assets/user.png')} style={styles.ImagemUser} />
-        </TouchableOpacity>
-      </View>
+      <HeaderWithSearch
+        searchQuery={searchQuery}
+        onSearchChange={(text) => setSearchQuery(text)}
+        onSearchSubmit={handleSearch}
+      />
       <View style={styles.container}>
         {loading ? (
           <ActivityIndicator size="large" color="#0000ff" />
@@ -113,7 +145,3 @@ function Index() {
     </View>
   );
 }
-
-// Observação:
-// 1. Utilizei os estilos `card`, `image`, e `description` do arquivo `styles.js` para garantir que os álbuns sejam exibidos de forma consistente e estilizada.
-// 2. A disposição dos elementos dentro de cada álbum foi organizada para melhorar a apresentação visual e manter a consistência com os outros elementos do aplicativo.

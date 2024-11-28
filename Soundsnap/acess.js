@@ -1,8 +1,11 @@
+// acess.js
+
 import axios from 'axios';
 
+// Função para autenticar e obter um token de acesso do Spotify
 export async function acess() {
-    let c_id = "c39f13e6b0b9496882f544f1a9456d7a"; // Substitua pelo seu Client ID
-    let c_sct = "b819c1e4cca44124bd66cbc9b5e74e79"; // Substitua pelo seu Client Secret
+    let c_id = "c39f13e6b0b9496882f544f1a9456d7a";
+    let c_sct = "b819c1e4cca44124bd66cbc9b5e74e79";
 
     try {
         const response = await axios.post(
@@ -18,12 +21,35 @@ export async function acess() {
                 },
             }
         );
-        return response.data; // Retorna os dados do token
+        return response.data;
     } catch (error) {
         console.error("Erro ao obter token de acesso:", error);
         throw new Error("Erro ao obter token de acesso");
     }
 }
+
+// Nova função para buscar álbuns com base em um termo de pesquisa
+export async function search_album(query) {
+    try {
+        // Obtém o token de acesso
+        const token = await acess();
+        const accessToken = token.access_token;
+
+        // Realiza a pesquisa na API do Spotify
+        const url = `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=album&limit=10&market=BR`;
+        const response = await axios.get(url, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error("Erro ao buscar álbuns:", error);
+        throw error;
+    }
+}
+
 
 // Função para buscar um álbum aleatório
 export async function get_rand_album() {
