@@ -247,6 +247,26 @@ const styles = StyleSheet.create({
     color: '#191013',
     marginBottom: 8,
   },
+
+  favoriteButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 15,
+    padding: 5,
+  },
+  
+  favoriteAlbum: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    backgroundColor: '#f8f8f8',
+  },
   
   
   
