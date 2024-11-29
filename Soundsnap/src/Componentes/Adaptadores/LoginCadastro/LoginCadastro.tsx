@@ -33,9 +33,17 @@ export default function LoginCadastro() {
 
   useEffect(() => {
     const loadUser = async () => {
-      const storedUser = await AsyncStorage.getItem('user');
-      if (storedUser) setUser(JSON.parse(storedUser));
-      setLoading(false);
+      setLoading(true);
+      try {
+        const storedUser = await AsyncStorage.getItem('user');
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+      } catch (error) {
+        console.error('Erro ao carregar usuário:', error);
+      } finally {
+        setLoading(false);
+      }
     };
     loadUser();
   }, []);
@@ -73,35 +81,61 @@ export default function LoginCadastro() {
       Alert.alert('Erro no cadastro', 'Por favor, preencha todos os campos obrigatórios.');
       return;
     }
+
     try {
-      const response = await axios.post('https://spotifyapi-hct0.onrender.com/users/', {
+      // Montando os dados do cadastro de forma consistente
+      const userData = {
         usuario: username.trim(),
         nome: fullName.trim(),
         email: email.trim(),
         senha: password.trim(),
-        imagem: "default_image_url",
+        imagem: "default_image_url", // Placeholder para a imagem do usuário
         likes: [],
         deslikes: []
-      });
-      if (response.status === 201) {
-        Alert.alert('Cadastro bem-sucedido', 'Sua conta foi criada!');
+      };
+
+      const response = await axios.post('https://spotifyapi-hct0.onrender.com/users/', userData);
+
+      if (response.status === 201 || response.status === 200) {
+        Alert.alert('Cadastro bem-sucedido', 'Sua conta foi criada com sucesso!');
         setIsLogin(true);
       } else {
-        Alert.alert('Erro no cadastro', 'Verifique os dados e tente novamente.');
+        Alert.alert('Erro no cadastro', 'Houve um problema ao tentar criar a sua conta. Tente novamente.');
       }
     } catch (error: any) {
-      const errorMessage = axios.isAxiosError(error) && error.response
-        ? Array.isArray(error.response.data.detail)
-          ? error.response.data.detail.map((detail: any) => detail.msg).join(', ')
-          : 'Não foi possível criar sua conta. Tente novamente.'
-        : 'Erro desconhecido. Tente novamente.';
-      Alert.alert('Erro no cadastro', errorMessage);
+      if (axios.isAxiosError(error) && error.response) {
+        if (error.response.status === 400 || error.response.status === 422) {
+          // Lidar com erros de validação ou dados incorretos
+          const errorMessage = error.response.data.detail || 'Erro ao tentar realizar o cadastro. Verifique os dados e tente novamente.';
+          Alert.alert('Erro no cadastro', typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage));
+        } else if (error.response.status === 404) {
+          // Caso o endpoint não seja encontrado
+          Alert.alert('Erro no cadastro', 'Endpoint não encontrado. Verifique a URL do servidor.');
+        } else {
+          Alert.alert('Erro no cadastro', 'Erro desconhecido ao tentar realizar o cadastro. Tente novamente.');
+        }
+      } else {
+        Alert.alert('Erro no cadastro', 'Erro desconhecido. Tente novamente.');
+      }
     }
   };
 
   const handleSearch = () => {
     console.log('Buscando por:', searchQuery);
     // Lógica para buscar álbuns usando a query
+  };
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('user');
+      setUser(null);
+      setUsername('');
+      setFullName('');
+      setEmail('');
+      setPassword('');
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
   };
 
   if (loading) {
@@ -124,6 +158,12 @@ export default function LoginCadastro() {
           <Text style={styles.loginTitle}>Bem-vindo, {user.nome}!</Text>
           <Text style={styles.inputLabel}>Usuário: {user.usuario}</Text>
           <Text style={styles.inputLabel}>Email: {user.email}</Text>
+          <TouchableOpacity 
+            style={[styles.loginButton, { marginTop: 20 }]}
+            onPress={handleLogout}
+          >
+            <Text style={styles.loginButtonText}>Logout</Text>
+          </TouchableOpacity>
           <Text style={[styles.loginTitle, { marginTop: 30 }]}>Seus álbuns favoritos</Text>
         </View>
       </View>
